@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     Alerm(alermTime: DateTime.now()),
     Alerm(alermTime: DateTime.now()),
   ];
+  SlidableController controller = SlidableController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,19 +66,32 @@ class _HomePageState extends State<HomePage> {
                     Alerm alerm = alermList[index];
                     return Column(
                       children: [
-                        ListTile(
-                          title: Text(
-                            DateFormat('H:mm').format(alerm.alermTime),
-                            style: TextStyle(color: Colors.white, fontSize: 50)
+                        if(index == 0) const Divider(color: Colors.grey, height: 1),
+                        Slidable(
+                          controller: controller,
+                          actionPane: const SlidableScrollActionPane(),
+                          child: ListTile(
+                            title: Text(
+                              DateFormat('H:mm').format(alerm.alermTime),
+                              style: TextStyle(color: Colors.white, fontSize: 50)
+                            ),
+                            trailing: CupertinoSwitch(
+                              value: alerm.isActive,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  alerm.isActive = newValue;
+                                });
+                              },
+                            ),
                           ),
-                          trailing: CupertinoSwitch(
-                            value: alerm.isActive,
-                            onChanged: (newValue) {
-                              setState(() {
-                                alerm.isActive = newValue;
-                              });
-                            },
-                          ),
+                          secondaryActions: [
+                            IconSlideAction(
+                              icon: Icons.delete,
+                              caption: "削除",
+                              color: Colors.red,
+                              onTap: (){},
+                            )
+                          ],
                         ),
                         const Divider(),
                       ],
