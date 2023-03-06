@@ -70,8 +70,11 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(color: Colors.white, fontSize: 50)
                           ),
                           trailing: CupertinoSwitch(
-                            value: true,
+                            value: alerm.isActive,
                             onChanged: (newValue) {
+                              setState(() {
+                                alerm.isActive = newValue;
+                              });
                             },
                           ),
                         ),
