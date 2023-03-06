@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import 'alerm.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,22 +35,55 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Alerm> alermList = [
+    Alerm(alermTime: DateTime.now()),
+    Alerm(alermTime: DateTime.now()),
+    Alerm(alermTime: DateTime.now()),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      backgroundColor: Colors.black,
+      body: Center(
+        child: CustomScrollView(
+          slivers: [
+            CupertinoSliverNavigationBar(
+              backgroundColor: Colors.black,
+              largeTitle: Text("アラーム", style: TextStyle(color: Colors.white)),
+              trailing: GestureDetector(
+                child: Icon(Icons.add, color: Colors.orange),
+                onTap: () {
+
+                },
+              )
             ),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    Alerm alerm = alermList[index];
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            DateFormat('H:mm').format(alerm.alermTime),
+                            style: TextStyle(color: Colors.white, fontSize: 50)
+                          ),
+                          trailing: CupertinoSwitch(
+                            value: true,
+                            onChanged: (newValue) {
+                            },
+                          ),
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                  childCount: alermList.length
+                )
+            )
           ],
-        ),
+        )
       ),
     );
   }
